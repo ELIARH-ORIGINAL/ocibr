@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCIBR — Cidadania Italiana para Oriundi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --verde: #009246; --verde-escuro: #006830; --verde-claro: #00b355;
+    --bianco: #FFFFFF; --rosso: #CE2B37; --rosso-escuro: #9B1F28;
+    --rosso-claro: #e8404d; --cinza: #F5F5F0; --texto: #1a1a1a; --texto-muted: #555;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; color: var(--texto); background: var(--bianco); overflow-x: hidden; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.97); border-bottom: 3px solid transparent; border-image: linear-gradient(to right, var(--verde) 33%, var(--bianco) 33% 66%, var(--rosso) 66%) 1; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 70px; box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--verde-escuro); letter-spacing: 0.05em; }
+  .nav-logo span { color: var(--rosso); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { text-decoration: none; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--texto); transition: color 0.3s; }
+  .nav-links a:hover { color: var(--verde); }
+  .nav-cta { background: var(--rosso); color: white !important; padding: 10px 24px; border-radius: 4px; }
+  .hero { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; background: var(--verde-escuro); padding-top: 70px; }
+  .hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, var(--verde-escuro) 0%, #004d20 50%, #003015 100%); }
+  .hero-flag { position: absolute; inset: 0; display: flex; }
+  .flag-verde { flex: 1; background: var(--verde-escuro); opacity: 0.9; }
+  .flag-bianco { flex: 1; background: rgba(255,255,255,0.03); }
+  .flag-rosso { flex: 1; background: var(--rosso-escuro); opacity: 0.6; }
+  .hero-pattern { position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 50%, rgba(0,146,70,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(206,43,55,0.15) 0%, transparent 50%); }
+  .hero-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .hero-text { color: white; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 24px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: 24px; }
+  .hero-title .highlight { color: var(--verde-claro); }
+  .hero-title .highlight-red { color: #ff8a8a; }
+  .hero-desc { font-size: 1.1rem; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.8); margin-bottom: 40px; }
+  .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary { background: var(--rosso); color: white; padding: 16px 36px; border-radius: 4px; font-size: 0.95rem; font-weight: 700; text-decoration: none; text-transform: uppercase; transition: all 0.3s; border: 2px solid var(--rosso); }
+  .btn-secondary { background: transparent; color: white; padding: 16px 36px; border-radius: 4px; font-size: 0.95rem; font-weight: 700; text-decoration: none; text-transform: uppercase; border: 2px solid rgba(255,255,255,0.4); transition: all 0.3s; }
+  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .stat-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 24px 16px; text-align: center; }
+  .stat-number { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--verde-claro); display: block; }
+  .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+  .section-sobre { padding: 100px 40px; background: var(--cinza); position: relative; }
+  .section-sobre::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(to right, var(--verde) 33%, white 33% 66%, var(--rosso) 66%); }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-tag { display: inline-block; background: var(--verde); color: white; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 6px 16px; border-radius: 3px; margin-bottom: 16px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.2; margin-bottom: 20px; }
+  .section-subtitle { font-size: 1.1rem; color: var(--texto-muted); line-height: 1.8; max-width: 600px; margin-bottom: 60px; }
+  .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .sobre-text p { font-size: 1rem; line-height: 1.9; color: var(--texto-muted); margin-bottom: 20px; }
+  .sobre-features { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+  .feature-item { display: flex; align-items: flex-start; gap: 16px; padding: 20px; background: white; border-radius: 8px; border-left: 4px solid var(--verde); }
+  .feature-item:nth-child(2) { border-left-color: var(--rosso); }
+  .feature-item:nth-child(3) { border-left-color: #888; }
+  .feature-icon { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; background: var(--cinza); }
+  .feature-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .feature-desc { font-size: 0.85rem; color: var(--texto-muted); line-height: 1.6; }
+  .italia-card { background: white; border-radius: 12px; padding: 40px; box-shadow: 0 8px 40px rgba(0,0,0,0.1); text-align: center; position: relative; overflow: hidden; }
+  .italia-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(to right, var(--verde) 33%, white 33% 66%, var(--rosso) 66%); }
+  .italia-flag-mini { display: flex; height: 60px; border-radius: 6px; overflow: hidden; margin: 0 auto 24px; width: 120px; }
+  .flag-mini-v { flex: 1; background: var(--verde); }
+  .flag-mini-b { flex: 1; background: white; }
+  .flag-mini-r { flex: 1; background: var(--rosso); }
+  .italia-card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 12px; }
+  .italia-card p { font-size: 0.9rem; color: var(--texto-muted); line-height: 1.7; margin-bottom: 24px; }
+  .continentes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .continente-item { background: var(--cinza); border-radius: 6px; padding: 10px 12px; font-size: 0.82rem; display: flex; align-items: center; gap: 8px; }
+  .cont-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--verde); flex-shrink: 0; }
+  .section-como { padding: 100px 40px; background: white; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 60px; }
+  .step { text-align: center; position: relative; }
+  .step::after { content: '→'; position: absolute; top: 30px; right: -20px; font-size: 1.5rem; color: var(--verde); opacity: 0.4; }
+  .step:last-child::after { display: none; }
+  .step-number { width: 64px; height: 64px; border-radius: 50%; background: var(--verde); color: white; font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 4px 20px rgba(0,146,70,0.3); }
+  .step:nth-child(2) .step-number, .step:nth-child(4) .step-number { background: var(--rosso); }
+  .step-title { font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
+  .step-desc { font-size: 0.875rem; color: var(--texto-muted); line-height: 1.7; }
+  .section-cta { padding: 100px 40px; background: var(--verde-escuro); text-align: center; position: relative; overflow: hidden; }
+  .section-cta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(206,43,55,0.15) 0%, transparent 60%); }
+  .cta-content { position: relative; z-index: 2; }
+  .cta-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); color: white; margin-bottom: 20px; }
+  .cta-desc { font-size: 1.1rem; color: rgba(255,255,255,0.75); max-width: 600px; margin: 0 auto 40px; line-height: 1.8; }
+  .contact-form { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+  .form-group input, .form-group select, .form-group textarea { padding: 14px 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: white; font-family: 'Lato', sans-serif; font-size: 0.95rem; outline: none; }
+  .form-group select option { background: var(--verde-escuro); }
+  .form-group textarea { resize: none; min-height: 100px; }
+  .btn-submit { width: 100%; background: var(--rosso); color: white; padding: 16px; border: none; border-radius: 6px; font-family: 'Lato', sans-serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+  footer { background: #0d0d0d; color: rgba(255,255,255,0.5); padding: 40px; text-align: center; position: relative; }
+  footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(to right, var(--verde) 33%, white 33% 66%, var(--rosso) 66%); }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: white; margin-bottom: 8px; }
+  .footer-logo span { color: var(--rosso); }
+  .footer-links { display: flex; gap: 24px; justify-content: center; margin: 16px 0; list-style: none; }
+  .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media(max-width:768px){ .hero-content, .sobre-grid { grid-template-columns: 1fr; } .steps { grid-template-columns: 1fr 1fr; } .step::after { display: none; } .form-row { grid-template-columns: 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">OCI<span>BR</span></div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#como">Como Funciona</a></li>
+    <li><a href="#contato">Contato</a></li>
+    <li><a href="#contato" class="nav-cta">Iniciar Processo</a></li>
+  </ul>
+</nav>
+<section class="hero">
+  <div class="hero-flag"><div class="flag-verde"></div><div class="flag-bianco"></div><div class="flag-rosso"></div></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">🇮🇹 Plataforma Global de Ação Social</div>
+      <h1 class="hero-title">Sua <span class="highlight">Cidadania</span><br>Italiana é um<br><span class="highlight-red">Direito</span> seu</h1>
+      <p class="hero-desc">A OCIBR é uma plataforma internacional dedicada a ajudar oriundi italianos em todos os continentes a resgatar e conquistar a cidadania italiana por descendência.</p>
+      <div class="hero-buttons">
+        <a href="#contato" class="btn-primary">Iniciar Meu Processo</a>
+        <a href="#como" class="btn-secondary">Como Funciona</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><span class="stat-number">80M+</span><span class="stat-label">Oriundi no Mundo</span></div>
+      <div class="stat-card"><span class="stat-number">5</span><span class="stat-label">Continentes Atendidos</span></div>
+      <div class="stat-card"><span class="stat-number">100%</span><span class="stat-label">Ação Social</span></div>
+      <div class="stat-card"><span class="stat-number">3ª</span><span class="stat-label">Geração Atendida</span></div>
+      <div class="stat-card"><span class="stat-number">EU</span><span class="stat-label">Passaporte Europeu</span></div>
+      <div class="stat-card"><span class="stat-number">🇮🇹</span><span class="stat-label">Identidade Italiana</span></div>
+    </div>
+  </div>
+</section>
+<section class="section-sobre" id="sobre">
+  <div class="container">
+    <span class="section-tag reveal">Nossa Missão</span>
+    <h2 class="section-title reveal">O que é a OCIBR?</h2>
+    <p class="section-subtitle reveal">Uma organização de ação social dedicada a orientar e apoiar descendentes de italianos no mundo inteiro no processo de obtenção da cidadania italiana.</p>
+    <div class="sobre-grid">
+      <div class="sobre-text reveal">
+        <p>Milhões de brasileiros e descendentes de italianos ao redor do planeta possuem o direito à cidadania italiana por <em>jure sanguinis</em> — o direito do sangue. Porém, o processo burocrático é complexo, demorado e muitas vezes inacessível sem orientação adequada.</p>
+        <p>A OCIBR nasceu para mudar essa realidade. Somos uma plataforma de ação social sem fins lucrativos que oferece orientação, suporte documental e acompanhamento em todas as etapas do processo de obtenção da cidadania italiana.</p>
+        <p>Atuamos nos 5 continentes, com foco especial na América do Sul, onde se concentra a maior colônia de descendentes italianos fora da Itália.</p>
+        <div class="sobre-features">
+          <div class="feature-item reveal"><div class="feature-icon">📋</div><div><div class="feature-title">Orientação Documental</div><div class="feature-desc">Guia completo sobre documentos necessários, certidões e apostilamentos.</div></div></div>
+          <div class="feature-item reveal"><div class="feature-icon">⚖️</div><div><div class="feature-title">Suporte Jurídico</div><div class="feature-desc">Parceria com advogados especializados em direito italiano e cidadania.</div></div></div>
+          <div class="feature-item reveal"><div class="feature-icon">🌍</div><div><div class="feature-title">Rede Global</div><div class="feature-desc">Presença em 5 continentes para atender oriundi em qualquer lugar do mundo.</div></div></div>
+        </div>
+      </div>
+      <div class="italia-card reveal">
+        <div class="italia-flag-mini"><div class="flag-mini-v"></div><div class="flag-mini-b"></div><div class="flag-mini-r"></div></div>
+        <h3>Presença Global OCIBR</h3>
+        <p>Atendemos oriundi italianos em todos os continentes, reconectando famílias à sua herança italiana.</p>
+        <div class="continentes">
+          <div class="continente-item"><div class="cont-dot"></div>América do Sul</div>
+          <div class="continente-item"><div class="cont-dot" style="background:var(--rosso)"></div>América do Norte</div>
+          <div class="continente-item"><div class="cont-dot"></div>Europa</div>
+          <div class="continente-item"><div class="cont-dot" style="background:var(--rosso)"></div>Oceania</div>
+          <div class="continente-item"><div class="cont-dot"></div>África</div>
+          <div class="continente-item"><div class="cont-dot" style="background:var(--rosso)"></div>Ásia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section-como" id="como">
+  <div class="container">
+    <span class="section-tag reveal" style="background:var(--rosso)">Processo</span>
+    <h2 class="section-title reveal">Como Funciona</h2>
+    <p class="section-subtitle reveal">Em 4 etapas simples você inicia sua jornada rumo à cidadania italiana.</p>
+    <div class="steps">
+      <div class="step reveal"><div class="step-number">1</div><div class="step-title">Diagnóstico Inicial</div><div class="step-desc">Análise da sua árvore genealógica e verificação do direito à cidadania por descendência.</div></div>
+      <div class="step reveal"><div class="step-number">2</div><div class="step-title">Pesquisa Documental</div><div class="step-desc">Levantamento e orientação para obtenção das certidões italianas e brasileiras necessárias.</div></div>
+      <div class="step reveal"><div class="step-number">3</div><div class="step-title">Processo Consular</div><div class="step-desc">Acompanhamento do agendamento e processo no consulado italiano competente.</div></div>
+      <div class="step reveal"><div class="step-number">4</div><div class="step-title">Cidadania Reconhecida</div><div class="step-desc">Emissão do passaporte italiano e acesso a todos os direitos de cidadão europeu.</div></div>
+    </div>
+  </div>
+</section>
+<section class="section-cta" id="contato">
+  <div class="cta-content">
+    <h2 class="cta-title reveal">Inicie Sua Jornada Hoje</h2>
+    <p class="cta-desc reveal">Preencha o formulário abaixo e nossa equipe entrará em contato para orientá-lo no processo de reconhecimento da sua cidadania italiana.</p>
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group"><label>Nome Completo</label><input type="text" placeholder="Seu nome" required /></div>
+        <div class="form-group"><label>E-mail</label><input type="email" placeholder="seu@email.com" required /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>País de Residência</label><select><option value="">Selecione...</option><option>Brasil</option><option>Argentina</option><option>Uruguai</option><option>Estados Unidos</option><option>Canadá</option><option>Austrália</option><option>Outro</option></select></div>
+        <div class="form-group"><label>Geração de Descendência</label><select><option value="">Selecione...</option><option>1ª Geração (filho)</option><option>2ª Geração (neto)</option><option>3ª Geração (bisneto)</option><option>4ª+ Geração</option></select></div>
+      </div>
+      <div class="form-group"><label>Mensagem</label><textarea placeholder="Conte-nos sobre sua situação e como podemos ajudar..."></textarea></div>
+      <button type="submit" class="btn-submit">Enviar — Quero Minha Cidadania 🇮🇹</button>
+    </form>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">OCI<span>BR</span></div>
+  <p>Organização de Cidadania Italiana no Brasil e no Mundo</p>
+  <ul class="footer-links"><li><a href="#sobre">Sobre</a></li><li><a href="#como">Como Funciona</a></li><li><a href="#contato">Contato</a></li></ul>
+  <p>© 2026 OCIBR — Todos os direitos reservados | contato@ocibr.com.br</p>
+</footer>
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => { entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 80); } }); }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+  function handleSubmit(e) { e.preventDefault(); const btn = e.target.querySelector('.btn-submit'); btn.textContent = '✅ Mensagem enviada! Entraremos em contato em breve.'; btn.style.background = '#006830'; setTimeout(() => { btn.textContent = 'Enviar — Quero Minha Cidadania 🇮🇹'; btn.style.background = ''; e.target.reset(); }, 4000); }
+  document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', e => { e.preventDefault(); const target = document.querySelector(a.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
+</script>
+</body>
+</html>
